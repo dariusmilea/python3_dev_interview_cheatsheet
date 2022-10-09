@@ -12,7 +12,7 @@ type("hello") # str
 ### 1.1 Truth Value Testing
 
 By default an object is True unless `__bool__()` method returns False or `__len__()` returns 0.
-What objects are coonsidered false:
+What objects are considered false:
 
 * `None` and `False`
 * 0 of any numeric type: `0`, `0.0`, `0j`, `Decimal(0)`
@@ -87,11 +87,11 @@ Numeric Operations:
 |`x%y`|remainder of `x/y`|
 |`-x`|negated x|
 |`+x`|x unchanged|
-|`abs(x)`|absolute value or magnitued of x|
+|`abs(x)`|absolute value or magnitude of x|
 |`int(x)`|x converted to integer|
 |`float(x)`|x converted to floating point|
 |`complex(re,im)`|a complex number with real part re, imaginary part im. im defaults to zero.|
-|`c.conjucagate()`|conjugate of the complex number c|
+|`c.conjugate()`|conjugate of the complex number c|
 |`divmod(x,y)`|pair `(x//y,x%y)`|
 |`pow(x,y)`|x to the power of y|
 |`x**y`|x to the power of y|
@@ -110,3 +110,94 @@ Bitwise Operations:
 |`x << n`|x shifted left by n bits|
 |`x >> n`|x shifted right by n bits|
 |`~x`|inverted bits of x|
+
+### 1.5 Additional methods for Integer types
+
+```python
+int.bit_length()
+```
+Returns the number of bits necessary to represent an integer in binary excluding sign and leading zeros
+
+```python
+int.bit_count()
+```
+Return the number of ones in the binary representation of the absolute value of the integer. This is also known as the population count.
+
+```python
+int.to_bytes()
+```
+Return an array of bytes representing an integer.
+
+```python
+#classmethod 
+int.from_bytes
+```
+Return the integer represented by the given array of bytes.
+
+```python
+int.as_integer_ratio()
+```
+Return a pair of integers whose ratio is exactly equal to the original integer and with a positive denominator.The integer ratio of integers (whole numbers) is always the integer as the numerator and 1 as the denominator.
+
+### 1.6 Additional methods for Float types
+
+```python
+float.as_integer_ratio()
+```
+Return a pair of integers whose ratio is exactly equal to the original float and with a positive denominator. Raises `OverflowError` on infinities and a `ValueError` on NaNs.
+
+```python
+float.is_integer()
+```
+Return True if the float instance is finite with integral value, and False otherwise.
+
+```python
+float.hex()
+```
+Return a representation of a floating-point number as a hexadecimal string. For finite floating-point numbers, this representation will always include a leading 0x and a trailing p and exponent.
+
+```python
+#classmethod
+float.fromhex(s)
+```
+Class method to return the `float` represented by a hexadecimal string s. The string s may have leading and trailing whitespace. A hexadecimal string takes this form:
+```
+[sign] ['0x'] integer ['.' fraction] ['p' exponent]
+```
+
+### 1.7 Hashing of numeric types
+
+For numbers x and y, possibly of different types, it’s a requirement that `hash(x) == hash(y)` whenever `x == y`
+
+### 1.8 Iterator types
+
+Python supports a concept of iteration over containers. This is implemented using two distinct methods; these are used to allow user-defined classes to support iteration. Sequences, described below in more detail, always support the iteration methods.
+
+```python
+container.__iter__()
+```
+Return an iterator object. The object is required to support the iterator protocol described below. If a container supports different types of iteration, additional methods can be provided to specifically request iterators for those iteration types.
+
+The iterator objects themselves are required to support the following two methods, which together form the iterator protocol:
+
+```python
+iterator.__iter__()
+```
+Return the `iterator` object itself. This is required to allow both containers and iterators to be used with the `for` and `in` statements.
+
+```python
+iterator.__next__()
+```
+Return the next item from the iterator. If there are no further items, raise the `StopIteration` exception.
+
+Python defines several iterator objects to support iteration over general and specific sequence types, dictionaries, and other more specialized forms. The specific types are not important beyond their implementation of the iterator protocol.
+
+Once an iterator’s `__next__()` method raises `StopIteration`, it must continue to do so on subsequent calls. Implementations that do not obey this property are deemed broken.
+
+### 1.9 Generator types
+
+Python’s generators provide a convenient way to implement the iterator protocol. If a container object’s `__iter__()` method is implemented as a generator, it will automatically return an iterator object (technically, a generator object) supplying the `__iter__()` and `__next__()` methods.
+
+### 1.10 Sequence Types
+
+There are three basic sequence types: `lists`, `tuples`, and `range` objects.
