@@ -268,3 +268,446 @@ The operations in the following table are defined on mutable sequence types. The
 A **shallow copy** means constructing a new collection object and then populating it with **references to the child objects found in the original**. In essence, a shallow copy is only one level deep. The copying process does not recurse and therefore won’t create copies of the child objects themselves.
 
 A **deep copy** makes the copying process **recursive**. It means **first constructing a new collection object and then recursively populating it with copies of the child objects found in the original**. Copying an object this way walks the whole object tree to create a **fully independent clone of the original object and all of its children**.
+
+**Lists** are **mutable** sequences used to store collections of items.
+
+`class list([iterable])` is the list constructor. Constructor builds a list of items in the same order as iterable's items.
+
+Lists implement all common and mutable sequence operations and also provide the method `sort(*, key=None, reverse=False)`. Key being the item of comparison and reverse is a boolean used to reverse the sorted list or not. This method modifies the sequence in place instead of creating a new one, use `sorted()` to generate a new sequence if needed.
+
+**Tuples** are **immutable** sequences used to store collections of heterogeneous data. Tuples are also used for cases where an immutable sequence of homogeneous data is needed.
+
+`class tuple([iterable])` is the tuple constructor. Constructor builds a tuple of items in the same order as iterable's items. Note that it is actually the **comma which makes a tuple, not the parentheses**. The parentheses are optional, except in the empty tuple case, or when they are needed to avoid syntactic ambiguity.
+
+For heterogeneous collections of data where access by name is clearer than access by index, `collections.namedtuple()` may be a more appropriate choice than a simple tuple object. `collections.namedtuple(typename, field_names, *, rename=False, defaults=None, module=None)`.
+Example:
+
+```python
+Point = namedtuple('Point', ['x', 'y'])
+p = Point(11, y=22)
+```
+
+**Ranges** are **immutable** sequences of numbers and are commonly used for looping a specific number of times in for loops.
+
+`class range(stop)` or `class range(start, stop[, step])`
+
+The arguments to the range constructor must be integers (either built-in int or any object that implements the `__index__()` special method)
+
+Ranges implement all of the common sequence operations **except concatenation and repetition** (due to the fact that range objects can only represent sequences that follow a strict pattern and repetition and concatenation will usually violate that pattern).The advantage of the range type over a regular list or tuple is that a range **object will always take the same (small) amount of memory**, no matter the size of the range it represents (as **it only stores the start, stop and step values**, calculating individual items and subranges as needed).
+
+Textual data in Python is handled with `str` objects, or **strings**. Strings are **immutable** sequences of Unicode code points.
+The `r` (“raw”) prefix that disables most escape sequence processing.
+
+`class str(object='')` or
+`class str(object=b'', encoding='utf-8', errors='strict')` are the str constructors. If object does not have a `__str__()` method, then str() falls back to returning `repr(object)`.
+
+**Bytes** objects are **immutable** sequences of single bytes. Since many major binary protocols are based on the ASCII text encoding, bytes objects offer several methods that are only valid when working with ASCII compatible data and are closely related to string objects in a variety of other ways.
+
+`class bytes([source[, encoding[, errors]]])`.
+
+Firstly, the syntax for bytes literals is largely the same as that for string literals, except that a **b prefix is added**:
+
+1.Single quotes: b'still allows embedded "double" quotes'
+
+2.Double quotes: b"still allows embedded 'single' quotes"
+
+3.Triple quoted: b'''3 single quotes''', b"""3 double quotes"""
+
+**Bytearray** objects are a **mutable** counterpart to bytes objects.
+
+`class bytearray([source[, encoding[, errors]]])`.
+There are no other ways then the constructor to create bytearray objects.
+
+A **set** object is an **unordered** collection of **distinct hashable objects**. Common uses include membership testing, removing duplicates from a sequence, and computing mathematical operations such as intersection, union, difference, and symmetric difference.
+
+Like other collections, sets support `x in set`, `len(set)`, and `for x in set`. Being an **unordered collection**, sets **do not record element position or order of insertion**. Accordingly, sets do not support indexing, slicing, or other sequence-like behavior.
+
+**set** is mutable, contents can be changed with methods like `add()` or `remove()`. Since it is mutable it has no hash value so it cannot be used as dictionary key or element of another set.
+**frozenset** is immutable and hashable.
+
+**sets** can be created like this:
+
+```python
+{'hello','world'}
+```
+
+or the constructor `class set([iterable])`
+**frozenset** can be created like this:
+`class frozenset([iterable])`
+
+Return a new set or frozenset object whose elements are taken from iterable. The elements of a set **must be hashable**. To represent sets of sets, the inner sets must be frozenset objects. If iterable is not specified, a new empty set is returned.
+
+**Set operations:**
+
+`update(*others)`
+`set |= other | ...`
+Update the set, adding elements from all others.
+
+`intersection_update(*others)`
+`set &= other & ...`
+Update the set, keeping only elements found in it and all others.
+
+`difference_update(*others)`
+`set -= other | ...`
+Update the set, removing elements found in others.
+
+`symmetric_difference_update(other)`
+`set ^= other`
+Update the set, keeping only elements found in either set, but not in both.
+
+`add(elem)`
+Add element elem to the set.
+
+`remove(elem)`
+Remove element elem from the set. Raises KeyError if elem is not contained in the set.
+
+`discard(elem)`
+Remove element elem from the set if it is present.
+
+`pop()`
+Remove and return an arbitrary element from the set. Raises KeyError if the set is empty.
+
+`clear()`
+Remove all elements from the set.
+
+A **mapping object** maps **hashable** values to arbitrary objects. Mappings are **mutable** objects. There is currently only one standard mapping type, the **dictionary**.
+
+Dictionaries preserve insertion order. Note that updating a key does not affect the order. Keys added after deletion are inserted at the end.
+
+Dictionary view objects
+The objects returned by dict.keys(), dict.values() and dict.items() are view objects. They provide a dynamic view on the dictionary’s entries, which means that when the dictionary changes, the view reflects these changes.
+
+## 2.Threading
+
+### 2.1 `Thread` Class
+
+The Thread class represents an activity that is run in a separate thread of control. There are two ways to specify the activity: by passing a callable object to the constructor, or by overriding the `run()` method in a subclass. No other methods (except for the constructor) should be overridden in a subclass. In other words, only override the `__init__()` and `run()` methods of this class.
+
+Once a thread object is created, its activity must be started by calling the thread’s `start()` method. This invokes the `run()` method in a separate thread of control.
+
+Once the thread’s activity is started, the thread is considered ‘alive’. It stops being alive when its `run()` method terminates – either normally, or by raising an unhandled exception. The `is_alive()` method tests whether the thread is alive.
+
+Other threads can call a thread’s `join()` method. This **blocks the calling thread** until the thread whose `join()` method is called is **terminated**.
+
+A thread has a **name**. The name can be passed to the constructor, and read or changed through the `name` attribute.
+
+If the `run()` method raises an exception, `threading.excepthook()` is called to handle it. By default, `threading.excepthook()` ignores silently `SystemExit`.
+
+A thread can be flagged as a **“daemon thread”**. The significance of this flag is that **the entire Python program exits when only daemon threads are left**. The initial value is inherited from the creating thread. The flag can be set through the `daemon` property or the `daemon` constructor argument.
+
+There is a **“main thread”** object; this corresponds to the **initial thread of control in the Python program**. It is not a daemon thread.
+
+The Thread constructor is:
+
+```python
+class threading.Thread(group=None, target=None, name=None, args=(), kwargs={}, *, daemon=None)
+```
+
+**group** should be `None`; reserved for future extension when a `ThreadGroup` class is implemented.
+
+**target** is the callable object to be invoked by the `run()` method. Defaults to `None`, meaning nothing is called.
+
+**name** is the thread name. By default, a unique name is constructed of the form **“Thread-N”** where **N** is a small decimal number, or **“Thread-N (target)”** where “target” is `target.__name__` if the target argument is specified.
+
+**args** is a list or tuple of arguments for the target invocation. Defaults to ().
+
+**kwargs** is a dictionary of keyword arguments for the target invocation. Defaults to {}.
+
+If not None, daemon explicitly sets whether the thread is daemonic. If None (the default), the daemonic property is inherited from the current thread.
+
+Thread object methods and properties:
+
+1. `start()` :
+   Start the thread’s activity. It must be called at most once per thread object. It arranges for the object’s run() method to be invoked in a separate thread of control.
+
+2. `run()` : Method representing the thread’s activity.
+   The standard `run()` method invokes the callable object passed to the object’s constructor as the target argument, if any, with positional and keyword arguments taken from the args and kwargs arguments, respectively.
+3. `join(timeout=None)` : Wait until the thread terminates. This blocks the calling thread until the thread whose `join()` method is called terminates – either normally or through an unhandled exception – or until the optional timeout occurs. When the timeout argument is present and not None, it should be a floating point number specifying a timeout for the operation in seconds (or fractions thereof). As `join()` always returns None, you must call `is_alive()` after `join()` to decide whether a timeout happened – if the thread is still alive, the `join()` call timed out. A thread can be joined many times.
+4. `name` : Name of the thread
+5. `ident` : Thread identifier
+6. `native_id` : Thread ID from the OS
+7. `is_alive()` : This method returns True just before the run() method starts until just after the run() method terminates.
+8. `daemon` : A boolean value indicating whether this thread is a daemon thread (True) or not (False)
+
+## 2.2 Locks
+
+A primitive lock is in one of two states, **“locked”** or **“unlocked”**. It is created in the unlocked state. It has two basic methods, `acquire()` and `release()`. When the state is **unlocked**, `acquire()` changes the state to **locked** and returns immediately. When the state is **locked**, `acquire()` blocks until a call to `release()` in another thread changes it to **unlocked**, then the `acquire()` call resets it to **locked** and returns. The `release()` method should only be called in the **locked state**; it changes the state to **unlocked** and returns immediately. If an attempt is made to **release an unlocked lock**, a RuntimeError will be raised.
+
+When more than one thread is blocked in `acquire()` waiting for the state to turn to unlocked, only one thread proceeds when a `release()` call resets the state to unlocked; which one of the waiting threads proceeds is not defined, and may vary across implementations.
+
+Lock methods, all of them are executed atomically (meaning one at the time):
+
+1. `acquire(blocking=True, timeout=-1)` : Acquire a lock, blocking or non-blocking. When invoked with the blocking argument set to True (the default), block until the lock is unlocked, then set it to locked and return True. When invoked with the blocking argument set to False, do not block. If a call with blocking set to True would block, return False immediately; otherwise, set the lock to locked and return True. When invoked with the floating-point timeout argument set to a positive value, block for at most the number of seconds specified by timeout and as long as the lock cannot be acquired. A timeout argument of -1 specifies an unbounded wait. It is forbidden to specify a timeout when blocking is False. The return value is True if the lock is acquired successfully, False if not (for example if the timeout expired).
+
+2. `release()` : Release a lock. This can be called from any thread, not only the thread which has acquired the lock. When the lock is locked, reset it to unlocked, and return. If any other threads are blocked waiting for the lock to become unlocked, allow exactly one of them to proceed. When invoked on an unlocked lock, a RuntimeError is raised. There is no return value.
+
+3. `locked()` : Return True if the lock is acquired.
+
+## 2.3 RLocks
+
+A reentrant lock must be released by the thread that acquired it. Once a thread has acquired a reentrant lock, the same thread may acquire it again without blocking; the thread must release it once for each time it has acquired it.
+
+An RLock can be acquired multiple times by a thread but also needs to be released for each time it is acquired in order to be available to other threads.
+
+Note that RLock is actually a factory function which returns an instance of the most efficient version of the concrete RLock class that is supported by the platform.
+
+RLock methods:
+
+1. `acquire(blocking=True, timeout=-1)` : Acquire a lock, blocking or non-blocking. When invoked without arguments: if this thread already owns the lock, increment the recursion level by one, and return immediately. Otherwise, if another thread owns the lock, block until the lock is unlocked. Once the lock is unlocked (not owned by any thread), then grab ownership, set the recursion level to one, and return. If more than one thread is blocked waiting until the lock is unlocked, only one at a time will be able to grab ownership of the lock. There is no return value in this case. When invoked with the blocking argument set to True, do the same thing as when called without arguments, and return True. When invoked with the blocking argument set to False, do not block. If a call without an argument would block, return False immediately; otherwise, do the same thing as when called without arguments, and return True. When invoked with the floating-point timeout argument set to a positive value, block for at most the number of seconds specified by timeout and as long as the lock cannot be acquired. Return True if the lock has been acquired, False if the timeout has elapsed.
+
+2. `release()` : Release a lock, decrementing the recursion level. If after the decrement it is zero, reset the lock to unlocked (not owned by any thread), and if any other threads are blocked waiting for the lock to become unlocked, allow exactly one of them to proceed. If after the decrement the recursion level is still nonzero, the lock remains locked and owned by the calling thread.
+
+## 2.4 Conditions
+
+A condition variable allows one or more threads to wait until they are notified by another thread.
+Constructor: `class threading.Condition(lock=None)` : If the lock argument is given and not None, it must be a Lock or RLock object, and it is used as the underlying lock. Otherwise, a new RLock object is created and used as the underlying lock.
+
+Condition methods:
+
+1. `acquire(*args)` : Acquire the underlying lock. This method calls the corresponding method on the underlying lock; the return value is whatever that method returns.
+
+2. `release()` : Release the underlying lock. This method calls the corresponding method on the underlying lock; there is no return value.
+
+3. `wait(timeout=None)` : Wait until notified or until a timeout occurs. If the calling thread has not acquired the lock when this method is called, a RuntimeError is raised. This method releases the underlying lock, and then blocks until it is awakened by a `notify()` or `notify_all()` call for the same condition variable in another thread, or until the optional timeout occurs. Once awakened or timed out, it re-acquires the lock and returns.
+
+4. `wait_for(predicate, timeout=None)` : Wait until a condition evaluates to true. predicate should be a callable which result will be interpreted as a boolean value. A timeout may be provided giving the maximum time to wait.
+
+5. `notify(n=1)` : By default, wake up one thread waiting on this condition, if any. If the calling thread has not acquired the lock when this method is called, a RuntimeError is raised. This method wakes up at most n of the threads waiting for the condition variable; it is a no-op if no threads are waiting.
+
+6. `notify_all()` : Wake up all threads waiting on this condition. This method acts like `notify()`, but wakes up all waiting threads instead of one.
+
+## 2.5 Semaphores
+
+A semaphore manages an internal counter which is decremented by each `acquire()` call and incremented by each `release()` call. The counter can never go below zero; when `acquire()` finds that it is zero, it blocks, waiting until some other thread calls `release()`.
+
+Constructor: `class threading.Semaphore(value=1)` : This class implements semaphore objects. A semaphore manages an atomic counter representing the number of release() calls minus the number of acquire() calls, plus an initial value. The acquire() method blocks if necessary until it can return without making the counter negative. If not given, value defaults to 1. The optional argument gives the initial value for the internal counter; it defaults to 1. If the value given is less than 0, ValueError is raised.
+
+Semaphore methods:
+
+1. `acquire(blocking=True, timeout=None)` : If the internal counter is larger than zero on entry, decrement it by one and return True immediately. If the internal counter is zero on entry, block until awoken by a call to release(). Once awoken (and the counter is greater than 0), decrement the counter by 1 and return True. Exactly one thread will be awoken by each call to release(). The order in which threads are awoken should not be relied on.
+
+2. `release(n=1)` : Release a semaphore, incrementing the internal counter by n. When it was zero on entry and other threads are waiting for it to become larger than zero again, wake up n of those threads.
+
+## 2.6 BoundedSemaphores
+
+Class implementing bounded semaphore objects. A bounded semaphore checks to make sure its current value doesn’t exceed its initial value. If it does, ValueError is raised. In most situations semaphores are used to guard resources with limited capacity. If the semaphore is released too many times it’s a sign of a bug. If not given, value defaults to 1.
+
+## 2.7 Events
+
+This is one of the simplest mechanisms for communication between threads: one thread signals an event and other threads wait for it. An event object manages an internal flag that can be set to true with the set() method and reset to false with the clear() method. The wait() method blocks until the flag is true.
+
+Event methods:
+
+1. `is_set()` : Return True if and only if the internal flag is true.
+2. `set()` : Sets the internal flag to True. All threads waiting for it to become true are awakened Threads that call wait() once the flag is true will not block at all.
+3. `clear()` : Reset the internal flag to false. Subsequently, threads calling wait() will block until set() is called to set the internal flag to true again.
+4. `wait(timeout=None)` : Block until the internal flag is set to True.
+
+## 2.8 Timers
+
+This class represents an action that should be run only after a certain amount of time has passed — a timer. Timer is a subclass of Thread and as such also functions as an example of creating custom threads.
+Timers are started, as with threads, by calling their start() method. The timer can be stopped (before its action has begun) by calling the cancel() method. The interval the timer will wait before executing its action may not be exactly the same as the interval specified by the user.
+
+Example:
+
+```python
+def hello():
+    print("hello, world")
+
+t = Timer(30.0, hello)
+t.start()  # after 30 seconds, "hello, world" will be printed
+```
+
+Class constructor: `class threading.Timer(interval, function, args=None, kwargs=None)` : Create a timer that will run function with arguments args and keyword arguments kwargs, after interval seconds have passed. If args is None (the default) then an empty list will be used. If kwargs is None (the default) then an empty dict will be used.
+
+Timer methods:
+
+1. `start()` : Starts timer, at the end of the set time the function is executed
+2. `cancel()` : Stop the timer, and cancel the execution of the timer’s action. This will only work if the timer is still in its waiting stage.
+
+### 2.9 Barriers
+
+This class provides a simple synchronization primitive for use by a fixed number of threads that need to wait for each other. Each of the threads tries to pass the barrier by calling the wait() method and will block until all of the threads have made their wait() calls. At this point, the threads are released simultaneously.
+
+The barrier can be reused any number of times for the same number of threads.
+
+Barrier constructor: `class threading.Barrier(parties, action=None, timeout=None)`
+
+Barrier methods and attributes:
+
+1. `wait(timeout=None)` : Pass the barrier. When all the threads party to the barrier have called this function, they are all released simultaneously. If a timeout is provided, it is used in preference to any that was supplied to the class constructor. The return value is an integer in the range 0 to parties – 1, different for each thread. This can be used to select a thread to do some special housekeeping. If an action was provided to the constructor, one of the threads will have called it prior to being released. Should this call raise an error, the barrier is put into the broken state.
+2. `reset()` : Return the barrier to the default, empty state. Any threads waiting on it will receive the BrokenBarrierError exception.
+3. `abort()` : Put the barrier into a broken state. This causes any active or future calls to wait() to fail with the BrokenBarrierError.
+4. `parties` : The number of threads required to pass the barrier.
+5. `n_waiting` : The number of threads waiting to pass the barrier.
+6. `broken` : A boolean that is True if the barrier is in the broken state.
+
+### 2.10 Context manager
+
+All of the objects provided by this module that have acquire() and release() methods can be used as context managers for a with statement. Currently, Lock, RLock, Condition, Semaphore, and BoundedSemaphore objects may be used as with statement context managers. The acquire() method will be called when the block is entered, and release() will be called when the block is exited. Hence, the following snippet:
+
+```python
+with some_lock:
+    # do something...
+#Is equivalent to
+
+some_lock.acquire()
+try:
+    # do something...
+finally:
+    some_lock.release()
+```
+
+## 3. Multiprocessing
+
+multiprocessing is a package that supports spawning processes using an API similar to the threading module. The multiprocessing package offers both local and remote concurrency, effectively side-stepping the Global Interpreter Lock by using subprocesses instead of threads. Due to this, the multiprocessing module allows the programmer to fully leverage multiple processors on a given machine. It runs on both Unix and Windows.
+
+### 3.1 Pools
+
+A prime example of this is the Pool object which offers a convenient means of parallelizing the execution of a function across multiple input values, distributing the input data across processes (data parallelism). The following example demonstrates the common practice of defining such functions in a module so that child processes can successfully import that module. This basic example of data parallelism using Pool:
+
+```python
+from multiprocessing import Pool
+
+def f(x):
+    return x*x
+
+if __name__ == '__main__':
+    with Pool(5) as p:
+        print(p.map(f, [1, 2, 3]))
+```
+
+Will print:
+
+```python
+[1, 4, 9]
+```
+
+### 3.2 The `Process` class
+
+In multiprocessing, processes are spawned by creating a Process object and then calling its start() method. Process follows the API of threading.Thread. A trivial example of a multiprocess program is:
+
+```python
+from multiprocessing import Process
+
+def f(name):
+    print('hello', name)
+
+if __name__ == '__main__':
+    p = Process(target=f, args=('bob',))
+    p.start()
+    p.join()
+```
+
+### 3.3 Starting a process
+
+Depending on the platform there are multiple ways to start a process:
+
+1. **spawn** : The parent process starts a fresh Python interpreter process. The child process will only inherit those resources necessary to run the process object’s run() method. In particular, unnecessary file descriptors and handles from the parent process will not be inherited. Starting a process using this method is rather slow compared to using fork or forkserver. Available on Unix and Windows. The default on Windows and macOS.
+2. **fork** : The parent process uses os.fork() to fork the Python interpreter. The child process, when it begins, is effectively identical to the parent process. All resources of the parent are inherited by the child process. Note that safely forking a multithreaded process is problematic. Available on Unix only. The default on Unix.
+3. **forkserver** : When the program starts and selects the forkserver start method, a server process is started. From then on, whenever a new process is needed, the parent process connects to the server and requests that it fork a new process. The fork server process is single threaded so it is safe for it to use os.fork(). No unnecessary resources are inherited. Available on Unix platforms which support passing file descriptors over Unix pipes.
+
+### 3.4 Exchanging data between processes
+
+multiprocessing supports two types of communication channel between processes:
+
+1. Queue :
+
+```python
+from multiprocessing import Process, Queue
+
+def f(q):
+    q.put([42, None, 'hello'])
+
+if __name__ == '__main__':
+    q = Queue()
+    p = Process(target=f, args=(q,))
+    p.start()
+    print(q.get())    # prints "[42, None, 'hello']"
+    p.join()
+```
+
+2. Pipe :
+   The Pipe() function returns a pair of connection objects connected by a pipe which by default is duplex (two-way). The two connection objects returned by Pipe() represent the two ends of the pipe. Each connection object has send() and recv() methods (among others). Note that data in a pipe may become corrupted if two processes (or threads) try to read from or write to the same end of the pipe at the same time. Of course there is no risk of corruption from processes using different ends of the pipe at the same time. For example:
+
+```python
+from multiprocessing import Process, Pipe
+
+def f(conn):
+    conn.send([42, None, 'hello'])
+    conn.close()
+
+if __name__ == '__main__':
+    parent_conn, child_conn = Pipe()
+    p = Process(target=f, args=(child_conn,))
+    p.start()
+    print(parent_conn.recv())   # prints "[42, None, 'hello']"
+    p.join()
+```
+
+### 3.5 Syncing processes
+
+multiprocessing contains equivalents of all the synchronization primitives from threading. For instance one can use a lock to ensure that only one process prints to standard output at a time:
+
+```python
+from multiprocessing import Process, Lock
+
+def f(l, i):
+    l.acquire()
+    try:
+        print('hello world', i)
+    finally:
+        l.release()
+
+if __name__ == '__main__':
+    lock = Lock()
+
+    for num in range(10):
+        Process(target=f, args=(lock, num)).start()
+```
+
+### 3.6 Sharing states between processes
+
+```python
+from multiprocessing import Process, Value, Array
+
+def f(n, a):
+    n.value = 3.1415927
+    for i in range(len(a)):
+        a[i] = -a[i]
+
+if __name__ == '__main__':
+    num = Value('d', 0.0)
+    arr = Array('i', range(10))
+
+    p = Process(target=f, args=(num, arr))
+    p.start()
+    p.join()
+
+    print(num.value)
+    print(arr[:])
+```
+
+or using a Manager
+
+```python
+from multiprocessing import Process, Manager
+
+def f(d, l):
+    d[1] = '1'
+    d['2'] = 2
+    d[0.25] = None
+    l.reverse()
+
+if __name__ == '__main__':
+    with Manager() as manager:
+        d = manager.dict()
+        l = manager.list(range(10))
+
+        p = Process(target=f, args=(d, l))
+        p.start()
+        p.join()
+
+        print(d)
+        print(l)
+```
