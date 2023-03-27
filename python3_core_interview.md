@@ -1,4 +1,4 @@
-# A complete core python3 interview cheatsheet
+# Core python3 interview cheatsheet
 
 ## 1. Python types
 
