@@ -1,2 +1,2 @@
 # python3_core_interview
-A full cheat sheet for python3 interviews
+A cheat sheet for python3 interviews based on my experience.
