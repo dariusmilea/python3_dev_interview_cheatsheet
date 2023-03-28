@@ -10,7 +10,8 @@
 | Lists         | Numbers         |
 | Sets          | Strings         |
 | Dictionaries  | Tuples          |
-|               | Frozen Sets     |
+| Bytearray     | Frozen Sets     |
+|               | Bytes           |
 
 ```python
 # You can use type(<SOMETHING>) to figure out what type is something
