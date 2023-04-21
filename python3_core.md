@@ -39,7 +39,7 @@
    5. [Syncing processes](#syncing-processes)
    6. [Sharing states between processes](#sharing-states-between-processes)
 4. [AsyncIO](#asyncio)
-   1. [`asyncio.run()`](#asyncio-run)
+   1. [asyncio.run()](#asyncio_run)
    2. [Runner](#runner)
    3. [Coroutines](#coroutines)
    4. [Awaitables](#awaitables)
@@ -777,7 +777,7 @@ if __name__ == '__main__':
         print(l)
 ```
 
-## 4. AsyncIO <a name="#asyncio"></a>
+## 4. AsyncIO <a name="asyncio"></a>
 
 asyncio is a library to write concurrent code using the async/await syntax.
 
@@ -785,7 +785,7 @@ asyncio is used as a foundation for multiple Python asynchronous frameworks that
 
 asyncio is often a perfect fit for IO-bound and high-level structured network code.
 
-### 4.1 `Asyncio.RUN` <a name="#asyncio-run"></a>
+### 4.1 `Asyncio.RUN` <a name="asyncio_run"></a>
 
 `asyncio.run(coro, *, debug=None)`
 
@@ -801,7 +801,7 @@ async def main():
 asyncio.run(main())
 ```
 
-### 4.2 Runner Context Manager <a name="#runner"></a>
+### 4.2 Runner Context Manager <a name="runner"></a>
 
 `class asyncio.Runner(*, debug=None, loop_factory=None)`
 
@@ -816,7 +816,7 @@ with asyncio.Runner() as runner:
     runner.run(main())
 ```
 
-### 4.3 Coroutines <a name="#coroutines"></a>
+### 4.3 Coroutines <a name="coroutines"></a>
 
 Coroutines declared with the async/await syntax is the preferred way of writing asyncio applications. For example, the following snippet of code prints “hello”, waits 1 second, and then prints “world”:
 
@@ -852,7 +852,7 @@ async def main():
         print(f"started at {time.strftime('%X')}")
 ```
 
-### 4.4 Awaitables <a name="#awaitables"></a>
+### 4.4 Awaitables <a name="awaitables"></a>
 
 We say that an object is an awaitable object if it can be used in an await expression. Many asyncio APIs are designed to accept awaitables.
 
@@ -930,7 +930,7 @@ async def main():
     )
 ```
 
-### 4.5 Task groups <a name="#task-groups"></a>
+### 4.5 Task groups <a name="task-groups"></a>
 
 Task groups combine a task creation API with a convenient and reliable way to wait for all tasks in the group to finish.
 
@@ -947,7 +947,7 @@ async def main():
 
 The `async with` statement will `wait for all tasks in the group to finish`. While waiting, `new tasks may still be added to the group` (for example, by passing tg into one of the coroutines and calling `tg.create_task()` in that coroutine).` Once the last task has finished and the async with block is exited, no new tasks may be added to the group`.
 
-### 4.6 Sleep <a name="#asyncio-sleep"></a>
+### 4.6 Sleep <a name="asyncio-sleep"></a>
 
 `coroutine asyncio.sleep(delay, result=None)`
 
@@ -979,6 +979,6 @@ Return a concurrent.futures.Future to wait for the result from another OS thread
 
 This function is meant to be called from a different OS thread than the one where the event loop is running.
 
-## 5. References <a name="#references"></a>
+## 5. References <a name="references"></a>
 
 This document was created with the help of the [official python3.11 documentation](https://docs.python.org/3/library/).

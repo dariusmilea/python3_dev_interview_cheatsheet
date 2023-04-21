@@ -97,6 +97,6 @@ Though REST also intends to make the web (internet) more streamlined and standar
 
 Roy Fielding, in his dissertation, has nowhere mentioned any implementation direction – including any protocol preference or even HTTP. Till the time, we are honoring the six guiding principles of REST, which we can call our interface – `RESTful`.
 
-## 5. Refrences
+## 5. Refrences <a name="references"></a>
 
 This document was created with the help of [RESTFULAPI.NET](https://restfulapi.net/).
