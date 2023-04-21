@@ -14,6 +14,7 @@
 8. [Authentication](#authentication)
 9. [Cookies](#cookies)
 10. [Caching](#caching)
+11. [Refrences](#references)
 
 ## 1. HTTP Definition <a name="definition"></a>
 
@@ -139,3 +140,7 @@ The shared cache is located between the client and the server and can store resp
 In addition to the function of access control, some proxies implement caching to reduce traffic out of the network. This is usually not managed by the service developer, so it must be controlled by appropriate HTTP headers and so on.
 
 Managed caches are explicitly deployed by service developers to offload the origin server and to deliver content efficiently. Examples include reverse proxies, CDNs, and service workers in combination with the Cache API.
+
+## 10. References <a name="references"></a>
+
+This document was created with the help of the [firefox http documentation](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview).
