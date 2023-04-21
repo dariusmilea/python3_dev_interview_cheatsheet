@@ -74,6 +74,6 @@ There are four levels of software testing: Unit >> Integration >> System >> Acce
 | Security testing       | Security Testing is a type of software testing that intends to uncover vulnerabilities of the system and determine that its data and resources are protected from possible intruders.                 |
 | Compliance testing     | Compliance Testing [also known as conformance testing, regulation testing, standards testing] is a type of testing to determine the compliance of a system with internal or external standards.       |
 
-## 5. Refrences <a name="references"></a>
+## 5. References <a name="references"></a>
 
 This document was created with the help of the [Software Testing Fundamentals website](https://softwaretestingfundamentals.com/).
