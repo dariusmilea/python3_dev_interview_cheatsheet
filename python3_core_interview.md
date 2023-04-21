@@ -1,6 +1,44 @@
-# A complete core python3 interview cheatsheet
+# Core python3 interview cheatsheet
 
-## 1. Python types
+# Table of contents
+1. [Python types](#python-types)
+   1. [Truth Value Testing](#truth-value-testing)
+   2. [Boolean operations](#boolean-operations)
+   3. [Comparison](#comparison)
+   4. [Numeric Types](#numeric-types)
+   5. [Additional methods for Integer types](#additional-methods-for-integer-types)
+   6. [Additional methods for Float types](#additional-methods-for-float-types)
+   7. [Hashing of numeric types](#hashing-of-numeric-types)
+   8. [Iterator types](#iterator-types)
+   9. [Generator types](#generator-types)
+   10. [Sequence Types](#sequence-types)
+         1. [Lists](#lists)
+         2. [Tuples and namedtuples](#tuples-and-namedtuples)
+         3. [Ranges](#ranges)
+         4. [Strings](#strings)
+         5. [Bytes](#bytes)
+         6. [Bytearrays](#bytearrays)
+         7. [Sets and frozensets](#sets-and-frozensets)
+         8. [Mapping objects (dictionaries)](#mapping-objects)
+2. [Threading](#threading)
+   1. [`Thread` Class](#thread-class)
+   2. [Locks](#locks)
+   3. [RLocks](#rlocks)
+   4. [Conditions](#conditions)
+   5. [Semaphores](#semaphores)
+   6. [BoundedSemaphores](#bounded-semaphores)
+   7. [Timers](#timers)
+   8. [Barriers](#barriers)
+   9. [Context manager](#threading-context-manager)
+3. [Multiprocessing](#multiprocessing)
+   1. [Pools](#pools)
+   2. [The `Process` class](#process-class)
+   3. [Starting a process](#starting-a-process)
+   4. [Exchanging data between processes](#data-exchange-processes)
+   5. [Syncing processes](#syncing-processes)
+   6. [Sharing states between processes](#sharing-states-between-processes)
+
+## 1. Python types <a name="python-types"></a>
 
 **Mutable** data types are those whose values can be changed or new values can be assigned to them.
 **Immutable** data types are those, whose values cannot be modified once they are created.
@@ -10,7 +48,8 @@
 | Lists         | Numbers         |
 | Sets          | Strings         |
 | Dictionaries  | Tuples          |
-|               | Frozen Sets     |
+| Bytearray     | Frozen Sets     |
+|               | Bytes           |
 
 ```python
 # You can use type(<SOMETHING>) to figure out what type is something
@@ -19,7 +58,7 @@ type(2.8) # float
 type("hello") # str
 ```
 
-### 1.1 Truth Value Testing
+### 1.1 Truth Value Testing <a name="truth-value-testing"></a>
 
 By default an object is True unless `__bool__()` method returns False or `__len__()` returns 0.
 What objects are considered false:
@@ -28,7 +67,7 @@ What objects are considered false:
 - 0 of any numeric type: `0`, `0.0`, `0j`, `Decimal(0)`
 - empty sequences and collections: `''`, `()`, `[]`
 
-### 1.2 Boolean operations
+### 1.2 Boolean operations <a name="boolean-operations"></a>
 
 `and`, `or`, `not`
 
@@ -38,7 +77,7 @@ What objects are considered false:
 | `x and y` | if x false, then x else y            |
 | `not x`   | if x false, then `True` else `False` |
 
-### 1.3 Comparison
+### 1.3 Comparison <a name="comparison"></a>
 
 | Operation | Meaning                 |
 | --------- | ----------------------- |
@@ -62,7 +101,7 @@ Comparisons can be defined with the use of:
 
 Two more operations with the same syntactic priority, `in` and `not in`, are supported by types that are iterable or implement the `__contains__()` method.
 
-### 1.4 Numeric Types
+### 1.4 Numeric Types <a name="numeric-types"></a>
 
 There are three numeric types for Python
 
@@ -123,7 +162,7 @@ Bitwise Operations:
 | `x >> n`  | x shifted right by n bits       |
 | `~x`      | inverted bits of x              |
 
-### 1.5 Additional methods for Integer types
+### 1.5 Additional methods for Integer types <a name="additional-methods-for-integer-types"></a>
 
 ```python
 int.bit_length()
@@ -156,7 +195,7 @@ int.as_integer_ratio()
 
 Return a pair of integers whose ratio is exactly equal to the original integer and with a positive denominator.The integer ratio of integers (whole numbers) is always the integer as the numerator and 1 as the denominator.
 
-### 1.6 Additional methods for Float types
+### 1.6 Additional methods for Float types <a name="additional-methods-for-float-types"></a>
 
 ```python
 float.as_integer_ratio()
@@ -187,11 +226,11 @@ Class method to return the `float` represented by a hexadecimal string s. The st
 [sign] ['0x'] integer ['.' fraction] ['p' exponent]
 ```
 
-### 1.7 Hashing of numeric types
+### 1.7 Hashing of numeric types <a name="hashing-of-numeric-types"></a>
 
 For numbers x and y, possibly of different types, it’s a requirement that `hash(x) == hash(y)` whenever `x == y`
 
-### 1.8 Iterator types
+### 1.8 Iterator types <a name="iterator-types"></a>
 
 Python supports a concept of iteration over containers. This is implemented using two distinct methods; these are used to allow user-defined classes to support iteration. Sequences, described below in more detail, always support the iteration methods.
 
@@ -219,11 +258,11 @@ Python defines several iterator objects to support iteration over general and sp
 
 Once an iterator’s `__next__()` method raises `StopIteration`, it must continue to do so on subsequent calls. Implementations that do not obey this property are deemed broken.
 
-### 1.9 Generator types
+### 1.9 Generator types <a name="generator-types"></a>
 
 Python’s generators provide a convenient way to implement the iterator protocol. If a container object’s `__iter__()` method is implemented as a generator, it will automatically return an iterator object (technically, a generator object) supplying the `__iter__()` and `__next__()` methods.
 
-### 1.10 Sequence Types
+### 1.10 Sequence Types <a name="sequence-types"></a>
 
 There are three basic sequence types: `lists`, `tuples`, and `range` objects. They all inherit their common operations from `collections.abc.Sequence` which is an ABC.
 
@@ -269,11 +308,15 @@ A **shallow copy** means constructing a new collection object and then populatin
 
 A **deep copy** makes the copying process **recursive**. It means **first constructing a new collection object and then recursively populating it with copies of the child objects found in the original**. Copying an object this way walks the whole object tree to create a **fully independent clone of the original object and all of its children**.
 
+#### 1.10.1 Lists <a name="lists"></a>
+
 **Lists** are **mutable** sequences used to store collections of items.
 
 `class list([iterable])` is the list constructor. Constructor builds a list of items in the same order as iterable's items.
 
 Lists implement all common and mutable sequence operations and also provide the method `sort(*, key=None, reverse=False)`. Key being the item of comparison and reverse is a boolean used to reverse the sorted list or not. This method modifies the sequence in place instead of creating a new one, use `sorted()` to generate a new sequence if needed.
+
+#### 1.10.2 Tuples and namedtuples <a name="tuples-and-namedtuples"></a>
 
 **Tuples** are **immutable** sequences used to store collections of heterogeneous data. Tuples are also used for cases where an immutable sequence of homogeneous data is needed.
 
@@ -287,6 +330,8 @@ Point = namedtuple('Point', ['x', 'y'])
 p = Point(11, y=22)
 ```
 
+#### 1.10.3 Ranges <a name="ranges"></a>
+
 **Ranges** are **immutable** sequences of numbers and are commonly used for looping a specific number of times in for loops.
 
 `class range(stop)` or `class range(start, stop[, step])`
@@ -295,11 +340,15 @@ The arguments to the range constructor must be integers (either built-in int or 
 
 Ranges implement all of the common sequence operations **except concatenation and repetition** (due to the fact that range objects can only represent sequences that follow a strict pattern and repetition and concatenation will usually violate that pattern).The advantage of the range type over a regular list or tuple is that a range **object will always take the same (small) amount of memory**, no matter the size of the range it represents (as **it only stores the start, stop and step values**, calculating individual items and subranges as needed).
 
+#### 1.10.4 Strings <a name="strings"></a>
+
 Textual data in Python is handled with `str` objects, or **strings**. Strings are **immutable** sequences of Unicode code points.
 The `r` (“raw”) prefix that disables most escape sequence processing.
 
 `class str(object='')` or
 `class str(object=b'', encoding='utf-8', errors='strict')` are the str constructors. If object does not have a `__str__()` method, then str() falls back to returning `repr(object)`.
+
+#### 1.10.5 Bytes <a name="bytes"></a>
 
 **Bytes** objects are **immutable** sequences of single bytes. Since many major binary protocols are based on the ASCII text encoding, bytes objects offer several methods that are only valid when working with ASCII compatible data and are closely related to string objects in a variety of other ways.
 
@@ -313,10 +362,14 @@ Firstly, the syntax for bytes literals is largely the same as that for string li
 
 3.Triple quoted: b'''3 single quotes''', b"""3 double quotes"""
 
+#### 1.10.6 Bytearrays <a name="bytearrays"></a>
+
 **Bytearray** objects are a **mutable** counterpart to bytes objects.
 
 `class bytearray([source[, encoding[, errors]]])`.
 There are no other ways then the constructor to create bytearray objects.
+
+#### 1.10.7 Sets and frozensets <a name="sets-and-frozensets"></a>
 
 A **set** object is an **unordered** collection of **distinct hashable objects**. Common uses include membership testing, removing duplicates from a sequence, and computing mathematical operations such as intersection, union, difference, and symmetric difference.
 
@@ -370,6 +423,8 @@ Remove and return an arbitrary element from the set. Raises KeyError if the set 
 `clear()`
 Remove all elements from the set.
 
+#### 1.11 Mapping objects (dictionaries) <a name="mapping-objects"></a>
+
 A **mapping object** maps **hashable** values to arbitrary objects. Mappings are **mutable** objects. There is currently only one standard mapping type, the **dictionary**.
 
 Dictionaries preserve insertion order. Note that updating a key does not affect the order. Keys added after deletion are inserted at the end.
@@ -377,9 +432,9 @@ Dictionaries preserve insertion order. Note that updating a key does not affect 
 Dictionary view objects
 The objects returned by dict.keys(), dict.values() and dict.items() are view objects. They provide a dynamic view on the dictionary’s entries, which means that when the dictionary changes, the view reflects these changes.
 
-## 2.Threading
+## 2.Threading <a name="threading"></a>
 
-### 2.1 `Thread` Class
+### 2.1 `Thread` Class <a name="thread-class"></a>
 
 The Thread class represents an activity that is run in a separate thread of control. There are two ways to specify the activity: by passing a callable object to the constructor, or by overriding the `run()` method in a subclass. No other methods (except for the constructor) should be overridden in a subclass. In other words, only override the `__init__()` and `run()` methods of this class.
 
@@ -429,7 +484,7 @@ Thread object methods and properties:
 7. `is_alive()` : This method returns True just before the run() method starts until just after the run() method terminates.
 8. `daemon` : A boolean value indicating whether this thread is a daemon thread (True) or not (False)
 
-## 2.2 Locks
+## 2.2 Locks <a name="locks"></a>
 
 A primitive lock is in one of two states, **“locked”** or **“unlocked”**. It is created in the unlocked state. It has two basic methods, `acquire()` and `release()`. When the state is **unlocked**, `acquire()` changes the state to **locked** and returns immediately. When the state is **locked**, `acquire()` blocks until a call to `release()` in another thread changes it to **unlocked**, then the `acquire()` call resets it to **locked** and returns. The `release()` method should only be called in the **locked state**; it changes the state to **unlocked** and returns immediately. If an attempt is made to **release an unlocked lock**, a RuntimeError will be raised.
 
@@ -443,7 +498,7 @@ Lock methods, all of them are executed atomically (meaning one at the time):
 
 3. `locked()` : Return True if the lock is acquired.
 
-## 2.3 RLocks
+## 2.3 RLocks <a name="rlocks"></a>
 
 A reentrant lock must be released by the thread that acquired it. Once a thread has acquired a reentrant lock, the same thread may acquire it again without blocking; the thread must release it once for each time it has acquired it.
 
@@ -457,7 +512,7 @@ RLock methods:
 
 2. `release()` : Release a lock, decrementing the recursion level. If after the decrement it is zero, reset the lock to unlocked (not owned by any thread), and if any other threads are blocked waiting for the lock to become unlocked, allow exactly one of them to proceed. If after the decrement the recursion level is still nonzero, the lock remains locked and owned by the calling thread.
 
-## 2.4 Conditions
+## 2.4 Conditions <a name="conditions"></a>
 
 A condition variable allows one or more threads to wait until they are notified by another thread.
 Constructor: `class threading.Condition(lock=None)` : If the lock argument is given and not None, it must be a Lock or RLock object, and it is used as the underlying lock. Otherwise, a new RLock object is created and used as the underlying lock.
@@ -476,7 +531,7 @@ Condition methods:
 
 6. `notify_all()` : Wake up all threads waiting on this condition. This method acts like `notify()`, but wakes up all waiting threads instead of one.
 
-## 2.5 Semaphores
+## 2.5 Semaphores <a name="semaphores"></a>
 
 A semaphore manages an internal counter which is decremented by each `acquire()` call and incremented by each `release()` call. The counter can never go below zero; when `acquire()` finds that it is zero, it blocks, waiting until some other thread calls `release()`.
 
@@ -488,11 +543,11 @@ Semaphore methods:
 
 2. `release(n=1)` : Release a semaphore, incrementing the internal counter by n. When it was zero on entry and other threads are waiting for it to become larger than zero again, wake up n of those threads.
 
-## 2.6 BoundedSemaphores
+## 2.6 BoundedSemaphores <a name="bounded-semaphores"></a>
 
 Class implementing bounded semaphore objects. A bounded semaphore checks to make sure its current value doesn’t exceed its initial value. If it does, ValueError is raised. In most situations semaphores are used to guard resources with limited capacity. If the semaphore is released too many times it’s a sign of a bug. If not given, value defaults to 1.
 
-## 2.7 Events
+## 2.7 Events <a name="events"></a>
 
 This is one of the simplest mechanisms for communication between threads: one thread signals an event and other threads wait for it. An event object manages an internal flag that can be set to true with the set() method and reset to false with the clear() method. The wait() method blocks until the flag is true.
 
@@ -503,7 +558,7 @@ Event methods:
 3. `clear()` : Reset the internal flag to false. Subsequently, threads calling wait() will block until set() is called to set the internal flag to true again.
 4. `wait(timeout=None)` : Block until the internal flag is set to True.
 
-## 2.8 Timers
+## 2.8 Timers <a name="timers"></a>
 
 This class represents an action that should be run only after a certain amount of time has passed — a timer. Timer is a subclass of Thread and as such also functions as an example of creating custom threads.
 Timers are started, as with threads, by calling their start() method. The timer can be stopped (before its action has begun) by calling the cancel() method. The interval the timer will wait before executing its action may not be exactly the same as the interval specified by the user.
@@ -525,7 +580,7 @@ Timer methods:
 1. `start()` : Starts timer, at the end of the set time the function is executed
 2. `cancel()` : Stop the timer, and cancel the execution of the timer’s action. This will only work if the timer is still in its waiting stage.
 
-### 2.9 Barriers
+### 2.9 Barriers <a name="barriers"></a>
 
 This class provides a simple synchronization primitive for use by a fixed number of threads that need to wait for each other. Each of the threads tries to pass the barrier by calling the wait() method and will block until all of the threads have made their wait() calls. At this point, the threads are released simultaneously.
 
@@ -542,7 +597,7 @@ Barrier methods and attributes:
 5. `n_waiting` : The number of threads waiting to pass the barrier.
 6. `broken` : A boolean that is True if the barrier is in the broken state.
 
-### 2.10 Context manager
+### 2.10 Context manager <a name="threading-context-manager"></a>
 
 All of the objects provided by this module that have acquire() and release() methods can be used as context managers for a with statement. Currently, Lock, RLock, Condition, Semaphore, and BoundedSemaphore objects may be used as with statement context managers. The acquire() method will be called when the block is entered, and release() will be called when the block is exited. Hence, the following snippet:
 
@@ -558,11 +613,11 @@ finally:
     some_lock.release()
 ```
 
-## 3. Multiprocessing
+## 3. Multiprocessing <a name="multiprocessing"></a>
 
 multiprocessing is a package that supports spawning processes using an API similar to the threading module. The multiprocessing package offers both local and remote concurrency, effectively side-stepping the Global Interpreter Lock by using subprocesses instead of threads. Due to this, the multiprocessing module allows the programmer to fully leverage multiple processors on a given machine. It runs on both Unix and Windows.
 
-### 3.1 Pools
+### 3.1 Pools <a name="pools"></a>
 
 A prime example of this is the Pool object which offers a convenient means of parallelizing the execution of a function across multiple input values, distributing the input data across processes (data parallelism). The following example demonstrates the common practice of defining such functions in a module so that child processes can successfully import that module. This basic example of data parallelism using Pool:
 
@@ -583,7 +638,7 @@ Will print:
 [1, 4, 9]
 ```
 
-### 3.2 The `Process` class
+### 3.2 The `Process` class <a name="process-class"></a>
 
 In multiprocessing, processes are spawned by creating a Process object and then calling its start() method. Process follows the API of threading.Thread. A trivial example of a multiprocess program is:
 
@@ -599,7 +654,7 @@ if __name__ == '__main__':
     p.join()
 ```
 
-### 3.3 Starting a process
+### 3.3 Starting a process <a name="starting-a-process"></a>
 
 Depending on the platform there are multiple ways to start a process:
 
@@ -607,7 +662,7 @@ Depending on the platform there are multiple ways to start a process:
 2. **fork** : The parent process uses os.fork() to fork the Python interpreter. The child process, when it begins, is effectively identical to the parent process. All resources of the parent are inherited by the child process. Note that safely forking a multithreaded process is problematic. Available on Unix only. The default on Unix.
 3. **forkserver** : When the program starts and selects the forkserver start method, a server process is started. From then on, whenever a new process is needed, the parent process connects to the server and requests that it fork a new process. The fork server process is single threaded so it is safe for it to use os.fork(). No unnecessary resources are inherited. Available on Unix platforms which support passing file descriptors over Unix pipes.
 
-### 3.4 Exchanging data between processes
+### 3.4 Exchanging data between processes <a name="data-exchange-processes"></a>
 
 multiprocessing supports two types of communication channel between processes:
 
@@ -645,9 +700,9 @@ if __name__ == '__main__':
     p.join()
 ```
 
-### 3.5 Syncing processes
+### 3.5 Syncing processes <a name="syncing-processes"></a>
 
-multiprocessing contains equivalents of all the synchronization primitives from threading. For instance one can use a lock to ensure that only one process prints to standard output at a time:
+Multiprocessing contains equivalents of all the synchronization primitives from threading. For instance one can use a lock to ensure that only one process prints to standard output at a time:
 
 ```python
 from multiprocessing import Process, Lock
@@ -666,7 +721,7 @@ if __name__ == '__main__':
         Process(target=f, args=(lock, num)).start()
 ```
 
-### 3.6 Sharing states between processes
+### 3.6 Sharing states between processes <a name="sharing-states-between-processes"></a>
 
 ```python
 from multiprocessing import Process, Value, Array
