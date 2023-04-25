@@ -2,7 +2,7 @@
 
 # Table of contents
 
-1. [Definition][#definition]
+1. [Definition](#definition)
 2. [Specifications](#specifications)
 3. [References](#references)
 
