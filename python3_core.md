@@ -46,7 +46,8 @@
    5. [Task groups](#task-groups)
    6. [Sleep](#asyncio-sleep)
    7. [Running coroutines in threads](#coroutine-thread)
-5. [Refrences](#references)
+5. [Generators](#generators)
+6. [References](#references)
 
 ## 1. Python types <a name="python-types"></a>
 
@@ -979,6 +980,36 @@ Return a concurrent.futures.Future to wait for the result from another OS thread
 
 This function is meant to be called from a different OS thread than the one where the event loop is running.
 
-## 5. References <a name="references"></a>
+## 5. Generators <a name="generators"></a>
+
+A generator expression yields a new generator object. Its syntax is the same as for comprehensions, except that it is enclosed in parentheses instead of brackets or curly braces.
+
+Example generator:
+
+```python
+generator = (x*y for x in range(10) for y in range(x, x+10))
+```
+
+Variables used in the generator expression are evaluated **lazily** when the `__next__()` method is called for the generator object (in the same fashion as normal generators). However, the **iterable expression in the leftmost for clause is immediately evaluated**, so that an error produced by it will be emitted at the point where the generator expression is defined, rather than at the point where the first value is retrieved.
+
+### 5.1 Yield expression <a name="yield"></a>
+
+The `yield` expression is used when defining a generator function or an asynchronous generator function and thus can only be used in the body of a function definition.
+
+```python
+def gen():  # defines a generator function
+    yield 123
+
+async def agen(): # defines an asynchronous generator function
+    yield 123
+```
+
+When a `generator function` is called, it returns an `iterator` known as a `generator`. That generator then `controls the execution of the generator function`. The execution starts when one of the `generator’s methods is called`. At that time, `the execution proceeds to the first yield expression, where it is suspended again`, returning the value of `expression_list` to the generator’s caller, or `None if expression_list` is omitted. By `suspended`, we mean that **all local state is retained, including the current bindings of local variables, the instruction pointer, the internal evaluation stack, and the state of any exception handling**. When the execution is resumed by calling one of the generator’s methods, the function can proceed exactly as if the yield expression were just another external call. The value of the yield expression after resuming depends on the method which resumed the execution. If `__next__()` is used (typically via either a for or the `next()` builtin) then the result is None. Otherwise, if `send()` is used, then the result will be the value passed in to that method.
+
+When `yield from <expr>` is used, the supplied `expression` **must be an iterable**. The values produced by iterating that iterable are passed directly to the caller of the current generator’s methods. Any values passed in with `send()` and any exceptions passed in with `throw()` are passed to the underlying iterator if it has the appropriate methods. If this is not the case, then `send()` will raise `AttributeError or TypeError`, while `throw()` will just raise the passed in exception immediately.
+
+When the `underlying iterator` is **complete**, the value attribute of the raised `StopIteration` instance **becomes the value of the yield expression**. It can be either set explicitly when raising `StopIteration`, or automatically when the subiterator is a generator (by returning a value from the subgenerator).
+
+## 6. References <a name="references"></a>
 
 This document was created with the help of the [official python3.11 documentation](https://docs.python.org/3/library/).
