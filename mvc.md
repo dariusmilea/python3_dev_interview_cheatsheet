@@ -35,9 +35,9 @@ This is an example of an MVC web application workflow.
 
 - This routing operation calls the `appropriate controller` and executes it.
 
-Step 4 − `The Controller` processes the data using `Model` and invokes the appropriate method.
+- `The Controller` processes the data using `Model` and invokes the appropriate method.
 
-Step 5 − The processed `Model` is then passed to the `View`, which in turn `renders the final output`.
+- The processed `Model` is then passed to the `View`, which in turn `renders the final output`.
 
 ## 6. References <a name="references"></a>
 
