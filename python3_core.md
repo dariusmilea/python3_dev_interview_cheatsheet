@@ -47,7 +47,8 @@
    6. [Sleep](#asyncio-sleep)
    7. [Running coroutines in threads](#coroutine-thread)
 5. [Generators](#generators)
-6. [References](#references)
+6. [Decorators](#decorators)
+7. [References](#references)
 
 ## 1. Python types <a name="python-types"></a>
 
@@ -1010,6 +1011,34 @@ When `yield from <expr>` is used, the supplied `expression` **must be an iterabl
 
 When the `underlying iterator` is **complete**, the value attribute of the raised `StopIteration` instance **becomes the value of the yield expression**. It can be either set explicitly when raising `StopIteration`, or automatically when the subiterator is a generator (by returning a value from the subgenerator).
 
-## 6. References <a name="references"></a>
+## 6. Decorators <a name="decorators"></a>
 
-This document was created with the help of the [official python3.11 documentation](https://docs.python.org/3/library/).
+A decorator in Python is a function that **accepts another function as an argument**. The decorator will usually **modify or enhance the function** it accepted and **return the modified function**.
+
+Example of a decorator:
+
+```python
+def another_function(func):
+    """
+    A function that accepts another function
+    """
+    def other_func():
+        val = f"The result of {func()} is {eval(func())}"
+        return val
+    return other_func
+
+@another_function
+def a_function():
+    """A pretty useless function"""
+    return "1+1"
+
+if __name__ == "__main__":
+    value = a_function()
+    print(value)
+
+# prints: The result of 1+1 is 2
+```
+
+## 7. References <a name="references"></a>
+
+This document was created with the help of the [official python3.11 documentation](https://docs.python.org/3/library/) and the [python101 website](https://python101.pythonlibrary.org/).
