@@ -38,6 +38,7 @@
    4. [Exchanging data between processes](#data-exchange-processes)
    5. [Syncing processes](#syncing-processes)
    6. [Sharing states between processes](#sharing-states-between-processes)
+   7. [Multithreading vs multiprocessing](#threading-vs-mprocessing)
 4. [AsyncIO](#asyncio)
    1. [asyncio.run()](#asyncio_run)
    2. [Runner](#runner)
@@ -778,6 +779,12 @@ if __name__ == '__main__':
         print(d)
         print(l)
 ```
+
+### 3.7 Multithreading vs multiprocessing <a name="threading-vs-mprocessing"></a>
+
+By formal definition, `multithreading` refers to the `ability of a processor to execute multiple threads concurrently`, where each `thread runs a process`. Whereas `multiprocessing` refers to the `ability of a system to run multiple processors concurrently`, where each `processor can run one or more threads`.
+
+Multithreading works with multiple threads share the same code, data, and files but run on a different register and stack. Multiprocessing multiplies a single processor — replicating the code, data, and files, which incurs more overhead.
 
 ## 4. AsyncIO <a name="asyncio"></a>
 
