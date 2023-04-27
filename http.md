@@ -72,6 +72,14 @@ Responses consist of the following elements:
 - HTTP headers, like those for requests.
 - Optionally, a body containing the fetched resource.
 
+| Status code ranges | Explanation             |
+| ------------------ | ----------------------- |
+| 100 - 199          | Informational responses |
+| 200 - 299          | Successful responses    |
+| 300 - 399          | Redirection messages    |
+| 400 - 499          | Client error responses  |
+| 500 - 599          | Server error responses  |
+
 ## 6. Sessions <a name="sessions"></a>
 
 In client-server protocols, like HTTP, sessions consist of three phases:
