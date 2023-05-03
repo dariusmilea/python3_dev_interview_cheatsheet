@@ -49,7 +49,9 @@
    7. [Running coroutines in threads](#coroutine-thread)
 5. [Generators](#generators)
 6. [Decorators](#decorators)
-7. [References](#references)
+7. [Garbage collection](#garbage-collection)
+8. [Fluent python](#fluent-python)
+9. [References](#references)
 
 ## 1. Python types <a name="python-types"></a>
 
@@ -1046,6 +1048,81 @@ if __name__ == "__main__":
 # prints: The result of 1+1 is 2
 ```
 
-## 7. References <a name="references"></a>
+## 8. Garbage collection <a name="garbage-collection"></a>
 
-This document was created with the help of the [official python3.11 documentation](https://docs.python.org/3/library/) and the [python101 website](https://python101.pythonlibrary.org/).
+In C, C++, and Java we have variables and objects. Python has **names**, not variables. A Python object is stored in memory with **names and references**. A name is just a **label for an object**, so one object can have many names. A **reference is a name(pointer) that refers to an object**.
+
+Python objects have three things: **Type**, **value**, and **reference count**. When we assign a name to a variable, its type is automatically detected by Python as we mentioned above. Value is declared while defining the object. Reference count is the number of **names pointing that object**.
+
+Python has **two ways to delete the unused objects from the memory**.
+
+When value **no longer has references it is deleted from the memory**, meaning the reference count has hit 0.
+The problem arrives when a cyclical reference or reference cycle exists. An example of such reference is when a list is appended to itself. Reference counting alone can not destroy objects with cyclic references. If the reference count is not zero, the object cannot be deleted.
+
+The solution to this problem is the second garbage collection method.
+
+**Generational garbage collection** is a type of trace-based garbage collection. It can break cyclic references and delete the unused objects even if they are referred by themselves.
+
+Python keeps track of every object in memory. 3 lists are created when a program is run. **Generation 0, 1, and 2 lists**.
+
+The garbage collector is keeping track of all objects in memory. A new object starts its life in the **first generation of the garbage collector**. If Python executes a garbage collection process on a generation and **an object survives**, **it moves up into a second**, older generation. The Python garbage collector has **three generations** in total, and an object moves into an older generation whenever it survives a garbage collection process on its current generation.
+
+For each generation, the **garbage collector module has a threshold number of objects**. If the number of objects **exceeds that threshold**, the garbage collector will trigger a **collection process**. For any objects that survive that process, they’re moved into an **older generation**.
+
+## 8. Fluent python <a name="fluent-python"></a>
+
+This is where I will store all the information I've gathered while reading [Fluent Python by Luciano Ramalho](https://www.amazon.com/Fluent-Python-Concise-Effective-Programming/dp/1491946008).
+
+- In order to implement such things as `my_collection[key]` `my_collection.__getitem__(key)` is required to be implemented.
+  The `__getitem__()` can also use a `slice` object as argument: `__getitem__(slice(start, stop, step))`. To implement the simplest possible collection it is enough to implement `__getitem__()` and `__len__()` for the collection class.
+
+- When adding two objects in python such as 1 + 2 the framework calls the `__add__(other)` method of the `int` object looking in **pseudo-code** something like this: `1.__add__(2)` but this wouldn't be allowed by the python interpreter because:
+
+```python
+ 1.__add__()
+  File "<stdin>", line 1
+    1.__add__()
+     ^
+SyntaxError: invalid decimal literal
+```
+
+- The expected behavior of infix operators such as `+` or `*` is to create new objects and not touch their operands.
+
+- The `__repr__` special method is called by `repr()` built in to get the string representation of the object for inspection. If `__repr__` is not implemented a Vector object would be show in the console as: `<Vector object at 0x10e100070>`. The `__repr__` is also called by `%r` or `!r` in the `string.format()` or the `f-strings`. The `__repr__` should return a string that is unambiguous and match the source code of recreating the object.
+
+- The contrast between `__repr__` and `__str__` is that `__str__` is called by `str()` constructor and implicitly used by the `print()` function. It should return a string suitable for end users. A simple explanation about the different use of these methods is that `__repr__` is used for debugging and `__str__` is used for end users. If the `__str__` is not implemented Python will fall back to `__repr__`.
+
+- By default user-defined classes are considered **truthy**, unless either `__bool__` or `__len__` are implemented. Basically `bool(x)` calls `x.__bool__()` and uses the result. If `__bool__` is not implemented is falls back to `x.__len__()` and if that returns 0 it returns False, otherwise it returns True.
+
+- The **Python data model** is the properties of objects in general in a Python.
+
+- Container sequence is a sequence that can hold items of different types: `list`, `tuple` and `collections.deque`
+
+- Flat sequence is a sequence that can hold items of one type: `str`, `bytes`, `bytearray`, `memoryview` and `array.array`
+
+- List, set and dict comprehension and generator expressions have their own local scope (like functions), so variables cannot leak outside the scope.
+
+- In order to create `tuples`, `arrays` or other types of sequences you can start from a list comprehension but generator expressions save memory because they yield information instead one by one using the iterator protocol instead of building a whole list to feed another constructor.
+
+- Tuples hold records: each item in the tuple holds the data for one field and the position of the item give meaning.
+
+- `*` can be used to grab arbitrary excess arguments.
+
+```python
+>>> a, b, *rest = range(5)
+>>> a, b, rest
+(0, 1, [2, 3, 4])
+#or
+>>> a, *body, c, d = range(5)
+>>> a, body, c, d
+(0, [1, 2], 3, 4)
+```
+
+## 9. References <a name="references"></a>
+
+This document was created with the help of the:
+
+- [official python3.11 documentation](https://docs.python.org/3/library/);
+- [python101 website](https://python101.pythonlibrary.org/);
+- [article on garbage collector in python](https://towardsdatascience.com/memory-management-and-garbage-collection-in-python-c1cb51d1612c);
+- [Fluent Python by Luciano Ramalho](https://www.amazon.com/Fluent-Python-Concise-Effective-Programming/dp/1491946008).
