@@ -1118,6 +1118,28 @@ SyntaxError: invalid decimal literal
 (0, [1, 2], 3, 4)
 ```
 
+- an object is hashable if it has a hash value which never changes during it's lifetime (it requires a `__hash__()` method), and can be compared to other objects (it requires an `__eq__()` method).
+
+- if 2 hashable objects compare equal they must have the same hash.
+
+- a tuple is hashable only if it's elements are hashable.
+
+- user defines types are hashable by default because their default hash value is `id()` and they all compare not equal. If an objects implements a custom `__eq__()` that takes into account internals state, it may be hashable only if all its attributes are hashable.
+
+- `collections.defaultdict` is configured to create items on demand whenever a missing key is searched. It has a `__missing__()` method which is called when `__getitem__()` does not find an item instead of throwing a `KeyError`. The `defaultdict` object takes as constructor argument a `default_factory` that is used when `dd[key]` but the `key` is not part of dd, the `default_factory` is used to create a new `key : value`, where the `key` is the one provided and the value is generated with the `default_factory` and returns a reference to it.
+
+- in order to create a new mapping type the best solution is to start from `collections.UserDict`
+
+- the `in` word uses `__contains__(key)` method.
+
+- `OrderedDic`t preserves the order in which the keys are inserted. A regular `dict` doesn’t track the insertion order and iterating it gives the values in an arbitrary order. By contrast, the **order the items are inserted is remembered by OrderedDict**.
+
+- there is an immutable mapping called `MappingProxyType` which generates a reference, named `mappingproxy`, to a `dictionary` provided as argument for the constructor. The reference only shows changes to the mapping without letting the user change the mapping with it.
+
+- a `set` is a **collection of unique objects**, so **all elements must be hashable**. The `set` is not hashable but `frozenset` is. A set can be created like this `s = {1}`. Set comprehension is possible too: `{a for a in range(10)}`
+
+- dictionaries in python use a `hashmap` which links each for each key a `hash` value that points to the key:value pair in the `hashmap`. In order to have fast access to items it uses a lot more memory to keep track of the `hashmap`.
+
 ## 9. References <a name="references"></a>
 
 This document was created with the help of the:
