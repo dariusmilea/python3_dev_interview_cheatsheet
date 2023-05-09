@@ -28,9 +28,11 @@
    4. [Conditions](#conditions)
    5. [Semaphores](#semaphores)
    6. [BoundedSemaphores](#bounded-semaphores)
-   7. [Timers](#timers)
-   8. [Barriers](#barriers)
-   9. [Context manager](#threading-context-manager)
+   7. [Events](#events)
+   8. [Timers](#timers)
+   9. [Barriers](#barriers)
+   10. [Context manager](#threading-context-manager)
+   11. [Queue](#queue)
 3. [Multiprocessing](#multiprocessing)
    1. [Pools](#pools)
    2. [The `Process` class](#process-class)
@@ -449,6 +451,14 @@ The objects returned by dict.keys(), dict.values() and dict.items() are view obj
 
 ## 2.Threading <a name="threading"></a>
 
+In **concurrent** execution, two or more tasks can start, execute and complete in **overlapping time periods**. Therefore, these tasks don’t necessarily have to run simultaneously — they just need to make progress in an overlapping manner.
+
+On the other hand, in **parallelism** multiple tasks (or even several components of one task) can literally **run at the same time** (e.g on a **multi-core processor or on a machine with multiple CPUs**).
+
+Python **cannot run threads in parallel** but it can run them **concurrently** through context switching during I/O bound operations.
+
+This limitation is actually enforced by GIL. The **Python Global Interpreter Lock** (GIL) prevents threads within the same process to be executed at the same time. The GIL is necessary because **Python’s interpreter is not thread-safe**. This **global lock is enforced every time we attempt to access Python objects within threads**. At any given time, **only one thread can acquire the lock for a specific object**. Therefore, CPU-bound code will have no performance gain with Python multi-threading.
+
 ### 2.1 `Thread` Class <a name="thread-class"></a>
 
 The Thread class represents an activity that is run in a separate thread of control. There are two ways to specify the activity: by passing a callable object to the constructor, or by overriding the `run()` method in a subclass. No other methods (except for the constructor) should be overridden in a subclass. In other words, only override the `__init__()` and `run()` methods of this class.
@@ -628,6 +638,75 @@ finally:
     some_lock.release()
 ```
 
+### 2.11 `Queue` <a name="queue"></a>
+
+The `queue` module implements **multi-producer, multi-consumer queues**. It is especially useful in threaded programming when information must be exchanged safely between multiple threads. The `Queue` class in this module implements all the required locking semantics.
+
+`class queue.Queue(maxsize=0)`
+Constructor for a **FIFO queue**. maxsize is an integer that sets the upperbound limit on the number of items that can be placed in the queue. Insertion will block once this size has been reached, until queue items are consumed. If maxsize is less than or equal to zero, the queue size is infinite.
+
+`Queue.qsize()`
+Return the **approximate size of the queue**. Note, qsize() > 0 doesn’t guarantee that a subsequent get() will not block, nor will qsize() < maxsize guarantee that put() will not block.
+
+`Queue.empty()`
+**Return True if the queue is empty, False otherwise**. If empty() returns True it doesn’t guarantee that a subsequent call to put() will not block. Similarly, if empty() returns False it doesn’t guarantee that a subsequent call to get() will not block.
+
+`Queue.full()`
+**Return True if the queue is full, False otherwise**. If full() returns True it doesn’t guarantee that a subsequent call to get() will not block. Similarly, if full() returns False it doesn’t guarantee that a subsequent call to put() will not block.
+
+`Queue.put(item, block=True, timeout=None)`
+**Put item into the queue**. If optional args block is true and timeout is None (the default), **block if necessary until a free slot is available**. If timeout is a positive number, it blocks at most timeout seconds and raises the Full exception if no free slot was available within that time. Otherwise (block is false), **put an item on the queue if a free slot is immediately available, else raise the Full exception** (timeout is ignored in that case).
+
+`Queue.put_nowait(item)`
+Equivalent to **put(item, block=False)**.
+
+`Queue.get(block=True, timeout=None)`
+**Remove and return an item from the queue**. If optional args block is true and timeout is None (the default), **block if necessary until an item is available**. If timeout is a positive number, it blocks at most timeout seconds and raises the Empty exception if no item was available within that time. **Otherwise (block is false), return an item if one is immediately available, else raise the Empty exception**(timeout is ignored in that case).
+
+`Queue.get_nowait()`
+**Equivalent to get(False)**.
+
+Two methods are offered to support tracking whether enqueued tasks have been fully processed by daemon consumer threads.
+
+`Queue.task_done()`
+**Indicate that a formerly enqueued task is complete**. Used by queue consumer threads. For each get() used to fetch a task, a subsequent call to task_done() tells the queue that the processing on the task is complete.
+
+**If a join() is currently blocking, it will resume when all items have been processed (meaning that a task_done() call was received for every item that had been put() into the queue)**.
+
+Raises a ValueError if called more times than there were items placed in the queue.
+
+`Queue.join()`
+**Blocks until all items in the queue have been gotten and processed**.
+
+**The count of unfinished tasks goes up whenever an item is added to the queue. The count goes down whenever a consumer thread calls task_done() to indicate that the item was retrieved and all work on it is complete**. When the count of unfinished tasks drops to zero, join() unblocks.
+
+Queue example:
+
+```python
+import threading
+import queue
+
+q = queue.Queue()
+
+def worker():
+    while True:
+        item = q.get()
+        print(f'Working on {item}')
+        print(f'Finished {item}')
+        q.task_done()
+
+# Turn-on the worker thread.
+threading.Thread(target=worker, daemon=True).start()
+
+# Send thirty task requests to the worker.
+for item in range(30):
+    q.put(item)
+
+# Block until all tasks are done.
+q.join()
+print('All work completed')
+```
+
 ## 3. Multiprocessing <a name="multiprocessing"></a>
 
 multiprocessing is a package that supports spawning processes using an API similar to the threading module. The multiprocessing package offers both local and remote concurrency, effectively side-stepping the Global Interpreter Lock by using subprocesses instead of threads. Due to this, the multiprocessing module allows the programmer to fully leverage multiple processors on a given machine. It runs on both Unix and Windows.
@@ -786,7 +865,24 @@ if __name__ == '__main__':
 
 By formal definition, `multithreading` refers to the `ability of a processor to execute multiple threads concurrently`, where each `thread runs a process`. Whereas `multiprocessing` refers to the `ability of a system to run multiple processors concurrently`, where each `processor can run one or more threads`.
 
-Multithreading works with multiple threads share the same code, data, and files but run on a different register and stack. Multiprocessing multiplies a single processor — replicating the code, data, and files, which incurs more overhead.
+Multithreading works with multiple threads share the same code, data, and files but run on a different register and stack.
+
+Multiprocessing multiplies a single processor — replicating the code, data, and files, which incurs more overhead.
+
+Threading
+
+- Threads share the same memory and can write to and read from shared variables
+- Due to Python Global Interpreter Lock, two threads won’t be executed at the same time, but concurrently (for example with context switching)
+- Effective for I/O-bound tasks
+- Can be implemented with threading module
+
+Multi-processing
+
+- Every process has is own memory space
+- Every process can contain one ore more subprocesses/threads
+- Can be used to achieve parallelism by taking advantage of multi-core machines since processes can run on different CPU cores
+- Effective for CPU-bound tasks
+- Can be implemented with multiprocessing module (or concurrent.futures.ProcessPoolExecutor)
 
 ## 4. AsyncIO <a name="asyncio"></a>
 
@@ -1146,5 +1242,6 @@ This document was created with the help of the:
 
 - [official python3.11 documentation](https://docs.python.org/3/library/);
 - [python101 website](https://python101.pythonlibrary.org/);
+- [article on multithreading vs multiprocessing in python](https://towardsdatascience.com/multithreading-multiprocessing-python-180d0975ab29)
 - [article on garbage collector in python](https://towardsdatascience.com/memory-management-and-garbage-collection-in-python-c1cb51d1612c);
 - [Fluent Python by Luciano Ramalho](https://www.amazon.com/Fluent-Python-Concise-Effective-Programming/dp/1491946008).
