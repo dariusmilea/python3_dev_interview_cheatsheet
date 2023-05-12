@@ -58,6 +58,7 @@ Requests consist of the following elements:
 
 - An HTTP method, usually a verb like `GET`, `POST`, or a noun like `OPTIONS `or `HEAD` that defines the operation the client wants to perform.
 - The path of the resource to fetch; the URL of the resource stripped from elements that are obvious from the context, for example without the protocol (`http://`), the domain (here, `developer.mozilla.org`), or the TCP port (here, `80`).
+- The main difference between the **PUT** and **PATCH** method is that the **PUT method uses the request URI to supply a modified version of the requested resource which replaces the original version of the resource**, whereas the **PATCH method supplies a set of instructions to modify the resource**.
 - The version of the HTTP protocol.
 - Optional headers that convey additional information for the servers.
 - A body, for some methods like POST, similar to those in responses, which contain the resource sent.
