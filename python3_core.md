@@ -96,16 +96,16 @@ What objects are considered false:
 
 ### 1.3 Comparison <a name="comparison"></a>
 
-| Operation | Meaning                 |
-| --------- | ----------------------- |
-| `<`       | strictly less than      |
-| `<=`      | less than or equal      |
-| `>`       | strictly greater than   |
-| `>=`      | greater than or equal   |
-| `==`      | equal                   |
-| `!=`      | not equal               |
-| `is`      | object identity         |
-| `is not`  | negated object identity |
+| Operation | Meaning                                                             |
+| --------- | ------------------------------------------------------------------- |
+| `<`       | strictly less than                                                  |
+| `<=`      | less than or equal                                                  |
+| `>`       | strictly greater than                                               |
+| `>=`      | greater than or equal                                               |
+| `==`      | equal                                                               |
+| `!=`      | not equal                                                           |
+| `is`      | object identity, verifies if two variables point to the same object |
+| `is not`  | negated object identity                                             |
 
 Different object types (non numerical) always compare `False`.
 Equality can be overwritten with use of `__eq__()`
