@@ -1228,7 +1228,7 @@ SyntaxError: invalid decimal literal
 
 - the `in` word uses `__contains__(key)` method.
 
-- `OrderedDic`t preserves the order in which the keys are inserted. A regular `dict` doesn’t track the insertion order and iterating it gives the values in an arbitrary order. By contrast, the **order the items are inserted is remembered by OrderedDict**.
+- `OrderedDict` preserves the order in which the keys are inserted. A regular `dict` doesn’t track the insertion order and iterating it gives the values in an arbitrary order. By contrast, the **order the items are inserted is remembered by OrderedDict**.
 
 - there is an immutable mapping called `MappingProxyType` which generates a reference, named `mappingproxy`, to a `dictionary` provided as argument for the constructor. The reference only shows changes to the mapping without letting the user change the mapping with it.
 
