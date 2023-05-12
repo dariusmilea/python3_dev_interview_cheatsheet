@@ -43,23 +43,23 @@ IP Address of the router.
 
 The router is the gateway through which a LAN device can communicate with a device that is part of the WAN.
 
-## 2.1 NAT (Network area translation) <a name="nat"></a>
+### 2.1 NAT (Network area translation) <a name="nat"></a>
 
 When a request comes from a LAN device it has it's LAN IP address which is only relevant inside the LAN. So for that device to communicate outside the LAN it is needed for the LAN IP address to be translated to a WAN IP address.
 
-## 2.2 Firewall <a name="firewall"></a>
+### 2.2 Firewall <a name="firewall"></a>
 
 Is a set of passive rules to protect the network from unauthorized access.
 
-## 2.3 DMZ (Demilitarized zone) <a name="dmz"></a>
+### 2.3 DMZ (Demilitarized zone) <a name="dmz"></a>
 
 A zone created within the LAN, which is specified to the router, so that when an external network device is trying to establish a connection to the LAN, that connection needs to be passed to the DMZ. If a device from the LAN is part of the DMZ it can talk to external network devices.
 
-## 2.4 Port <a name="port"></a>
+### 2.4 Port <a name="port"></a>
 
 All devices from a LAN have communication ports in order to communicate with all the other devices. For example a port for a website webserver is 80, for a tomcat server 88 and so on.
 
-## 2.5 Port forwarding <a name="port-forwarding"></a>
+### 2.5 Port forwarding <a name="port-forwarding"></a>
 
 For a device from the LAN one of the ports becomes designated port for external communication from outside of the LAN connections.
 
