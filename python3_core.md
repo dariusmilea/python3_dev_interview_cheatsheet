@@ -1170,7 +1170,7 @@ def another_function(argument):
          return other_func
     return decorator
 
-@another_function(argument)
+@another_function("argument")
 def a_function(name):
     """A pretty useless function"""
     return name
