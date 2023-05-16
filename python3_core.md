@@ -1136,13 +1136,55 @@ def another_function(func):
 def a_function():
     """A pretty useless function"""
     return "1+1"
-
-if __name__ == "__main__":
-    value = a_function()
-    print(value)
-
-# prints: The result of 1+1 is 2
 ```
+
+Example of a decorator where the function takes arguments:
+
+```python
+def another_function(func):
+    """
+    A function that accepts another function
+    """
+    def other_func(name):
+        val = f"The result of {func(name)} is {eval(func())}"
+        return val
+    return other_func
+
+@another_function
+def a_function(name):
+    """A pretty useless function"""
+    return name
+```
+
+Example of a decorator with arguments:
+
+```python
+def another_function(argument):
+    """
+    def decorator(func):
+         A function that accepts another function
+         """
+         def other_func(name):
+            val = f"The result of {func(name)} is {eval(func())}, the argument is: {argument}"
+            return val
+         return other_func
+    return decorator
+
+@another_function(argument)
+def a_function(name):
+    """A pretty useless function"""
+    return name
+```
+
+In Python, the `@classmethod` decorator is used to declare a method in the class as a class method that can be called using `ClassName.MethodName()`. The class method can also be called using an object of the class. A class function usually has an argument called `cls` which is a reference to the class and all it's attributes.
+
+The `@property` decorator is a built-in decorator in Python for the `property()` function. Use `@property` decorator on any method in the class to use the method as a property.
+
+- `@property`: Declares the method as a property.
+- `@<property-name>.setter`: Specifies the setter method for a property that sets the value to a property.
+- `@<property-name>.deleter`: Specifies the delete method as a property that deletes a property.
+
+The `@staticmethod` is a built-in decorator that defines a static method in the class in Python. A static method doesn't receive any reference argument whether it is called by an instance of a class or by the class itself.
 
 ## 8. Garbage collection <a name="garbage-collection"></a>
 
@@ -1168,6 +1210,8 @@ For each generation, the **garbage collector module has a threshold number of ob
 ## 8. Fluent python <a name="fluent-python"></a>
 
 This is where I will store all the information I've gathered while reading [Fluent Python by Luciano Ramalho](https://www.amazon.com/Fluent-Python-Concise-Effective-Programming/dp/1491946008).
+
+- Python includes the special variable called `__name__` that contains the scope of the code being executed as a string. `__main__` is the name of the top-level scope in which top-level code executes.
 
 - In order to implement such things as `my_collection[key]` `my_collection.__getitem__(key)` is required to be implemented.
   The `__getitem__()` can also use a `slice` object as argument: `__getitem__(slice(start, stop, step))`. To implement the simplest possible collection it is enough to implement `__getitem__()` and `__len__()` for the collection class.
@@ -1235,6 +1279,19 @@ SyntaxError: invalid decimal literal
 - a `set` is a **collection of unique objects**, so **all elements must be hashable**. The `set` is not hashable but `frozenset` is. A set can be created like this `s = {1}`. Set comprehension is possible too: `{a for a in range(10)}`
 
 - dictionaries in python use a `hashmap` which links each for each key a `hash` value that points to the key:value pair in the `hashmap`. In order to have fast access to items it uses a lot more memory to keep track of the `hashmap`.
+
+- mutable default parameters for a function should never be used because the default value is defined at creation of the function so if the function is called multiple times with the same default value it will use the same place in memory. For example :
+
+```python
+def add_to_list(name: str, list: List = [])
+   list.append(str)
+   print(list)
+   
+add_to_list("a")
+# will return ["a"]
+add_to_list("b")
+# will return ["a", "b"] because it adds to the same list defined in the function creation and references within the list argument
+```
 
 ## 9. References <a name="references"></a>
 
