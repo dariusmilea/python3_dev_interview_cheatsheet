@@ -1161,9 +1161,9 @@ Example of a decorator with arguments:
 ```python
 def another_function(argument):
     """
+    A function that accepts another function
+    """
     def decorator(func):
-         A function that accepts another function
-         """
          def other_func(name):
             val = f"The result of {func(name)} is {eval(func(name))}, the argument is: {argument}"
             return val
