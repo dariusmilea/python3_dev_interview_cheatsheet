@@ -1146,7 +1146,7 @@ def another_function(func):
     A function that accepts another function
     """
     def other_func(name):
-        val = f"The result of {func(name)} is {eval(func())}"
+        val = f"The result of {func(name)} is {eval(func(name))}"
         return val
     return other_func
 
@@ -1165,7 +1165,7 @@ def another_function(argument):
          A function that accepts another function
          """
          def other_func(name):
-            val = f"The result of {func(name)} is {eval(func())}, the argument is: {argument}"
+            val = f"The result of {func(name)} is {eval(func(name))}, the argument is: {argument}"
             return val
          return other_func
     return decorator
