@@ -2,58 +2,61 @@
 
 # Table of contents
 
-1. [Python types](#python-types)
-   1. [Truth Value Testing](#truth-value-testing)
-   2. [Boolean operations](#boolean-operations)
-   3. [Comparison](#comparison)
-   4. [Numeric Types](#numeric-types)
-   5. [Additional methods for Integer types](#additional-methods-for-integer-types)
-   6. [Additional methods for Float types](#additional-methods-for-float-types)
-   7. [Hashing of numeric types](#hashing-of-numeric-types)
-   8. [Iterator types](#iterator-types)
-   9. [Generator types](#generator-types)
-   10. [Sequence Types](#sequence-types)
-       1. [Lists](#lists)
-       2. [Tuples and namedtuples](#tuples-and-namedtuples)
-       3. [Ranges](#ranges)
-       4. [Strings](#strings)
-       5. [Bytes](#bytes)
-       6. [Bytearrays](#bytearrays)
-       7. [Sets and frozensets](#sets-and-frozensets)
-       8. [Mapping objects (dictionaries)](#mapping-objects)
-2. [Threading](#threading)
-   1. [`Thread` Class](#thread-class)
-   2. [Locks](#locks)
-   3. [RLocks](#rlocks)
-   4. [Conditions](#conditions)
-   5. [Semaphores](#semaphores)
-   6. [BoundedSemaphores](#bounded-semaphores)
-   7. [Events](#events)
-   8. [Timers](#timers)
-   9. [Barriers](#barriers)
-   10. [Context manager](#threading-context-manager)
-   11. [Queue](#queue)
-3. [Multiprocessing](#multiprocessing)
-   1. [Pools](#pools)
-   2. [The `Process` class](#process-class)
-   3. [Starting a process](#starting-a-process)
-   4. [Exchanging data between processes](#data-exchange-processes)
-   5. [Syncing processes](#syncing-processes)
-   6. [Sharing states between processes](#sharing-states-between-processes)
-   7. [Multithreading vs multiprocessing](#threading-vs-mprocessing)
-4. [AsyncIO](#asyncio)
-   1. [asyncio.run()](#asyncio_run)
-   2. [Runner](#runner)
-   3. [Coroutines](#coroutines)
-   4. [Awaitables](#awaitables)
-   5. [Task groups](#task-groups)
-   6. [Sleep](#asyncio-sleep)
-   7. [Running coroutines in threads](#coroutine-thread)
-5. [Generators](#generators)
-6. [Decorators](#decorators)
-7. [Garbage collection](#garbage-collection)
-8. [Fluent python](#fluent-python)
-9. [References](#references)
+- [Core python3 interview cheatsheet](#core-python3-interview-cheatsheet)
+- [Table of contents](#table-of-contents)
+  - [1. Python types ](#1-python-types-)
+    - [1.1 Truth Value Testing ](#11-truth-value-testing-)
+    - [1.2 Boolean operations ](#12-boolean-operations-)
+    - [1.3 Comparison ](#13-comparison-)
+    - [1.4 Numeric Types ](#14-numeric-types-)
+    - [1.5 Additional methods for Integer types ](#15-additional-methods-for-integer-types-)
+    - [1.6 Additional methods for Float types ](#16-additional-methods-for-float-types-)
+    - [1.7 Hashing of numeric types ](#17-hashing-of-numeric-types-)
+    - [1.8 Iterator types ](#18-iterator-types-)
+    - [1.9 Generator types ](#19-generator-types-)
+    - [1.10 Sequence Types ](#110-sequence-types-)
+      - [1.10.1 Lists ](#1101-lists-)
+      - [1.10.2 Tuples and namedtuples ](#1102-tuples-and-namedtuples-)
+      - [1.10.3 Ranges ](#1103-ranges-)
+      - [1.10.4 Strings ](#1104-strings-)
+      - [1.10.5 Bytes ](#1105-bytes-)
+      - [1.10.6 Bytearrays ](#1106-bytearrays-)
+      - [1.10.7 Sets and frozensets ](#1107-sets-and-frozensets-)
+      - [1.11 Mapping objects (dictionaries) ](#111-mapping-objects-dictionaries-)
+  - [2.Threading ](#2threading-)
+    - [2.1 `Thread` Class ](#21-thread-class-)
+  - [2.2 Locks ](#22-locks-)
+  - [2.3 RLocks ](#23-rlocks-)
+  - [2.4 Conditions ](#24-conditions-)
+  - [2.5 Semaphores ](#25-semaphores-)
+  - [2.6 BoundedSemaphores ](#26-boundedsemaphores-)
+  - [2.7 Events ](#27-events-)
+  - [2.8 Timers ](#28-timers-)
+    - [2.9 Barriers ](#29-barriers-)
+    - [2.10 Context manager ](#210-context-manager-)
+    - [2.11 `Queue` ](#211-queue-)
+  - [3. Multiprocessing ](#3-multiprocessing-)
+    - [3.1 Pools ](#31-pools-)
+    - [3.2 The `Process` class ](#32-the-process-class-)
+    - [3.3 Starting a process ](#33-starting-a-process-)
+    - [3.4 Exchanging data between processes ](#34-exchanging-data-between-processes-)
+    - [3.5 Syncing processes ](#35-syncing-processes-)
+    - [3.6 Sharing states between processes ](#36-sharing-states-between-processes-)
+    - [3.7 Multithreading vs multiprocessing ](#37-multithreading-vs-multiprocessing-)
+  - [4. AsyncIO ](#4-asyncio-)
+    - [4.1 `Asyncio.RUN` ](#41-asynciorun-)
+    - [4.2 Runner Context Manager ](#42-runner-context-manager-)
+    - [4.3 Coroutines ](#43-coroutines-)
+    - [4.4 Awaitables ](#44-awaitables-)
+    - [4.5 Task groups ](#45-task-groups-)
+    - [4.6 Sleep ](#46-sleep-)
+    - [4.7 Running coroutines in threads ](#47-running-coroutines-in-threads-)
+  - [5. Generators ](#5-generators-)
+    - [5.1 Yield expression ](#51-yield-expression-)
+  - [6. Decorators ](#6-decorators-)
+  - [8. Garbage collection ](#8-garbage-collection-)
+  - [8. Fluent python ](#8-fluent-python-)
+  - [9. References ](#9-references-)
 
 ## 1. Python types <a name="python-types"></a>
 
@@ -1292,6 +1295,34 @@ add_to_list("a")
 add_to_list("b")
 # will return ["a", "b"] because it adds to the same list defined in the function creation and references within the list argument
 ```
+
+- sets are made of hashable unique elements but they are not hashable objects, if you want them to be hashable use `frozensets`. Sets have very fast data access due to an underlying hash map used to keep track of all items. Set literals look like this:
+
+```python
+s1 = {1}
+s2 = {1, 2}
+```
+
+- building sets using the `{}` operator is a lot faster than calling `set([1,2,3])` because it needs to fetch a constructor, build a list and pass it to the constructor, using `{}` uses a specialized `BUILD_SET` bytecode.
+
+- frozensets are created by using the `frozenset(iterable)` constructor
+
+- set comprehension is allowed:
+
+```python
+# build a set of numbers from 1 to 10
+{i for i in range(10)}
+```
+
+- sets allow logical group operations such as:
+  - a | b = union
+  - a & b = intersection
+  - a - b = difference
+  - a ^ b = symmetric difference (XOR)
+
+- dictionaries work based on hashmaps. When you do `my_dict[search_key]` python calls `hash(search_key)` to obtain a hash value for the search key. After that it uses the least significant bits of that number as offset to look up the `bucket` in the `hash table`. The number of significant bits used depends on the size of the table, more data, more bits are used. If the found bucket is empty `KeyError` is raised. Otherwise the bucket has a `found_key:found_value` pair. Python checks if `search_key == found_key`. If they match, that's the item you're looking for. If not it means there is a `hash collision` so python will use other bits from the hash to find the pair of `found key` and `found_value`. A hash collision happens because the `hash` function maps arbitrary objects to a small number of bits, and in addition, the hash table is indexed with a subset of those bits. When a hash table takes too much space Python can move the table to a new place in memory. The larger the table the more bits from the hashes are used for bucket offset values.
+
+- sets work a lot like that but the buckets only hold a reference to a value
 
 ## 9. References <a name="references"></a>
 
